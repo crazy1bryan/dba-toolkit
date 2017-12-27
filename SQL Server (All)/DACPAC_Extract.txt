@@ -1,0 +1,2 @@
+:: For Azure SQL, the fully-qualified name must be used
+C:\Program Files (x86)\Microsoft SQL Server\130\DAC\bin> ./sqlpackage /Action:Extract /SourceDatabaseName:"DatabaseName" /SourceServerName:"SourceServer" /TargetFile:"C:\temp\DatabaseName.dacpac" /SourceUser:"user" /SourcePassword:"password"
