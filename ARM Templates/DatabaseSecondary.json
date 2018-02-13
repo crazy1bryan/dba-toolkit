@@ -1,0 +1,95 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "administratorLogin": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure SQL administrator login"
+      }
+    },
+    "administratorLoginPassword": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure SQL administrator password"
+      }
+    },
+    "DatabaseName": {
+      "type": "string",
+      "metadata": {
+        "description": "database name"
+      }
+    },
+    "primarySQLServerRg": {
+        "type": "string",
+        "metadata": {
+          "description": "Primary SQL Server RG"
+        }
+      },
+    "primarySQLServerName": {
+      "type": "string",
+      "metadata": {
+        "description": "Primary SQL Server name"
+      }
+    },
+    "secondarySQLServerName": {
+      "type": "string",
+      "metadata": {
+        "description": "Secondary SQL Server name"
+      }
+    },
+    "requestedServiceObjectiveName": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure SQL service objective"
+      }
+    },
+    "apiVersion": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure SQL service objective"
+      }
+    },
+  },
+  "resources": [
+  {
+    "apiVersion": "[parameters('apiVersion')]",
+    "location": "[resourceGroup().location]",
+    "name": "[parameters('secondarySQLServerName')]",
+    "properties": {
+      "administratorLogin": "[parameters('administratorLogin')]",
+      "administratorLoginPassword": "[parameters('administratorLoginPassword')]"
+    },
+    "resources": [
+      {
+        "apiVersion": "[parameters('apiVersion')]",
+        "dependsOn": [
+          "[concat('Microsoft.Sql/servers/', parameters('secondarySQLServerName'))]"
+        ],
+        "location": "[resourceGroup().location]",
+        "name": "[parameters('DatabaseName')]",
+        "properties": {
+          "createMode": "OnlineSecondary",
+          "sourceDatabaseId": "[concat(subscription().id, '/resourceGroups/', parameters('primarySQLServerRg'), '/providers/Microsoft.Sql/servers/', parameters('primarySQLServerName'), '/databases/', parameters('DatabaseName'))]",
+          "requestedServiceObjectiveName": "[parameters('requestedServiceObjectiveName')]"
+        },
+        "type": "databases"
+      },
+      {
+        "apiVersion": "[parameters('apiVersion')]",
+        "dependsOn": [
+          "[concat('Microsoft.Sql/servers/', parameters('secondarySQLServerName'))]"
+        ],
+        "location": "[resourceGroup().location]",
+        "name": "AllowAllWindowsAzureIps",
+        "properties": {
+          "endIpAddress": "0.0.0.0",
+          "startIpAddress": "0.0.0.0"
+        },
+        "type": "firewallrules"
+      }
+    ],
+      "type": "Microsoft.Sql/servers"
+    }
+  ]
+}

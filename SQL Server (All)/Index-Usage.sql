@@ -17,4 +17,4 @@ WHERE
 ORDER BY
 	SchemaName,
 	ObjectName,
-	IndexName
+	IndexName;

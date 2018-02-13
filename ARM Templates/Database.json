@@ -1,0 +1,111 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "administratorLogin": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure SQL administrator login"
+      }
+    },
+    "administratorLoginPassword": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure SQL administrator password"
+      }
+    },
+    "DatabaseName": {
+      "type": "string",
+      "metadata": {
+        "description": "database name"
+      }
+    },
+    "SQLServerName": {
+      "type": "string",
+      "metadata": {
+        "description": "SQL Server name"
+      }
+    },
+    "edition": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure SQL edition"
+      }
+    },
+    "collation": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure SQL collation"
+      }
+    },
+    "requestedServiceObjectiveName": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure SQL service objective"
+      }
+    },
+    "apiVersion": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure SQL service objective"
+      }
+    },
+    "maxSizeBytes": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure SQL service objective"
+      }
+    }
+
+  },
+  "variables": {},
+  "resources": [
+    {
+      "name": "[parameters('SQLServerName')]",
+      "type": "Microsoft.Sql/servers",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "SqlServer"
+      },
+      "apiVersion": "2015-05-01-preview",
+      "properties": {
+        "administratorLogin": "[parameters('administratorLogin')]",
+        "administratorLoginPassword": "[parameters('administratorLoginPassword')]"
+      },
+      "resources": [
+        {
+          "name": "[parameters('DatabaseName')]",
+          "type": "databases",
+          "location": "[resourceGroup().location]",
+          "tags": {
+            "displayName": "Database"
+          },
+          "apiVersion": "2015-05-01-preview",
+          "dependsOn": [
+            "[parameters('SQLServerName')]"
+          ],
+          "properties": {
+            "edition": "[parameters('edition')]",
+            "collation": "[parameters('collation')]",
+            "maxSizeBytes": "[parameters('maxSizeBytes')]",
+            "requestedServiceObjectiveName": "[parameters('requestedServiceObjectiveName')]"
+          }
+        },
+        {
+          "type": "firewallrules",
+          "apiVersion": "2014-04-01",
+          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/', parameters('SQLServerName'))]"
+          ],
+          "location": "[resourceGroup().location]",
+          "name": "AllowAllWindowsAzureIps",
+          "properties": {
+            "startIpAddress": "0.0.0.0",
+            "endIpAddress": "0.0.0.0"
+          }
+        }
+      ]
+    }
+    ],
+    "outputs": { }
+}
