@@ -1,0 +1,1 @@
+DBCC STACKDUMP('some sort of comment here as to why we are doing it');
