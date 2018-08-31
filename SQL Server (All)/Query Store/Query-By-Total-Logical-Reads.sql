@@ -2,7 +2,7 @@ SELECT TOP 20
 	p.query_id,
 	ISNULL(OBJECT_NAME(q.object_id), '')												AS object_name,
 	qt.query_sql_text,
-	ROUND(CONVERT(FLOAT, SUM(rs.avg_cpu_time * rs.count_executions)) * 0.001, 2)		AS total_cpu_time,
+	ROUND(CONVERT(FLOAT, SUM(rs.avg_logical_io_reads * rs.count_executions)) * 8, 2)	AS total_logical_io_reads,
 	SUM(rs.count_executions)															AS execution_count
 FROM sys.query_store_runtime_stats rs
 	INNER JOIN sys.query_store_plan p ON p.plan_id = rs.plan_id
@@ -12,6 +12,6 @@ WHERE NOT (rs.first_execution_time < '2018-08-24' OR rs.last_execution_time > '2
 GROUP BY
 	p.query_id,
 	qt.query_sql_text,
-	q.object_id 
-HAVING COUNT(DISTINCT p.plan_id) >= 1 
-ORDER BY total_cpu_time DESC
+	q.object_id
+HAVING COUNT(DISTINCT p.plan_id) >= 1
+ORDER BY total_logical_io_reads DESC
