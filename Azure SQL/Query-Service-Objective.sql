@@ -1,0 +1,1 @@
+SELECT DATABASEPROPERTYEX ('FillInDatabaseName', 'ServiceObjective');
