@@ -36,13 +36,13 @@ FROM sys.objects
 WHERE type = 'U' AND name NOT IN ('Account', 'AuditEvents', 'Users');
 
 
--- Roles
-SELECT 'DROP ROLE [' + name + '];'
-FROM sysusers
-WHERE issqlrole = 1 AND UID < 16384 AND name <> 'public';
-
-
 -- Users
 SELECT 'DROP USER [' + name + '];'
 FROM sysusers
 WHERE issqluser = 1 AND hasdbaccess = 1 AND name <> 'dbo';
+
+
+-- Roles
+SELECT 'DROP ROLE [' + name + '];'
+FROM sysusers
+WHERE issqlrole = 1 AND UID < 16384 AND name <> 'public';
