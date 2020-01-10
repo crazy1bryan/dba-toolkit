@@ -22,8 +22,3 @@ FROM
 -- ORDER BY qs.total_logical_writes DESC    -- logical writes
 -- ORDER BY avg_elapsed_time_MS DESC        -- Average elapsed time
 ;
-
-
-update stats check if running
-update status hourly
-check monitoring
