@@ -9,9 +9,9 @@ WHERE
 	name NOT LIKE 'db_%' AND
 	issqlrole = 0;
 
--- Drop all roles
-EXECUTE sp_executesql @sql;
+EXECUTE sys.sp_executesql @SQL;
 
+-- Drop all roles
 SET @SQL = '';
 SELECT @SQL = @SQL + 'DROP ROLE [' + name + '];'
 FROM dbo.sysusers
@@ -19,4 +19,5 @@ WHERE
 	name <> 'public' AND
 	name NOT LIKE 'db_%' AND
 	issqlrole	= 1;
-EXECUTE sp_executesql @sql;
+
+EXECUTE sys.sp_executesql @SQL;

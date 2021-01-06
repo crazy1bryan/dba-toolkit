@@ -1,7 +1,7 @@
-DECLARE @sql NVARCHAR(MAX);
-SET @sql = N'';
+DECLARE @SQL NVARCHAR(MAX);
+SET @SQL = N'';
 
-SELECT @sql = @sql + N'
+SELECT @SQL = @SQL + N'
   ALTER TABLE ' + QUOTENAME(s.name) + N'.'
   + QUOTENAME(t.name) + N' DROP CONSTRAINT '
   + QUOTENAME(c.name) + ';'
@@ -13,4 +13,4 @@ ON t.[schema_id] = s.[schema_id]
 WHERE c.[type] IN ('D','C','F','PK','UQ')
 ORDER BY c.[type];
 
-EXEC sys.sp_executesql @sql;
+EXECUTE sys.sp_executesql @SQL;
