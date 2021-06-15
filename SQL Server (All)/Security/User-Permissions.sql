@@ -18,3 +18,20 @@ WHERE
 ORDER BY
 	su.name,
 	dp.state_desc;
+
+-- Show all table permissions for all users
+SELECT
+	su.name,
+	st.name,
+	dp.state_desc,
+	dp.permission_name
+FROM sys.database_permissions dp
+	INNER JOIN sysusers su on su.uid = dp.grantee_principal_id
+	INNER JOIN sys.tables st ON st.object_id = dp.major_id
+WHERE
+	su.name = 'nha-adf-nms'
+ORDER BY
+	su.name,
+	st.name,
+	dp.state_desc,
+	dp.permission_name;
