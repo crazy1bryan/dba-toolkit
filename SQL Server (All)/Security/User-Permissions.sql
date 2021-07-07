@@ -28,8 +28,6 @@ SELECT
 FROM sys.database_permissions dp
 	INNER JOIN sysusers su on su.uid = dp.grantee_principal_id
 	INNER JOIN sys.tables st ON st.object_id = dp.major_id
-WHERE
-	su.name = 'nha-adf-nms'
 ORDER BY
 	su.name,
 	st.name,
