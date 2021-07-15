@@ -18,6 +18,5 @@ CASE
 WHEN au.[type] in (1,3) THEN p.hobt_id
 WHEN au.type = 2 THEN p.partition_id
 end = au.container_id
-INNER JOIN sys.objects o ON i.object_id = o.object_id
-WHERE o.is_ms_shipped <> 1
+INNER JOIN sys.objects o ON i.object_id = o.object_ido.is_ms_shipped <> 1
 ORDER BY TableName, i.index_id;
