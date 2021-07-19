@@ -1,0 +1,4 @@
+IF NOT EXISTS (SELECT SCHEMA_ID FROM sys.schemas WHERE [name] = 'admin')
+BEGIN
+    EXECUTE ('CREATE SCHEMA [admin] AUTHORIZATION [dbo];');
+END;
