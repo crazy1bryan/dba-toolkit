@@ -33,7 +33,7 @@ WHERE type IN ('IF', 'TF');
 -- Tables
 SELECT 'DROP TABLE ' + SCHEMA_NAME(schema_id) + '.' + name
 FROM sys.objects
-WHERE type = 'U' AND name NOT IN ('Account', 'AuditEvents', 'Users');
+WHERE type = 'U';
 
 
 -- Users
