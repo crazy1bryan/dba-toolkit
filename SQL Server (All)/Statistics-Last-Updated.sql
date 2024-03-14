@@ -1,5 +1,7 @@
 SELECT
-	OBJECT_NAME(object_id)				AS [ObjectName],
-	[name]								AS [StatisticName],
-	STATS_DATE([object_id], [stats_id])	AS [StatisticUpdateDate]
-FROM sys.stats;
+	o.name	AS TableName,
+	i.name	AS IndexName,
+	STATS_DATE(i.object_id, i.index_id) AS StatsDate
+FROM sys.objects o
+JOIN sys.indexes i ON o.object_id = i.object_id
+ORDER BY STATS_DATE(i.object_id, i.index_id) desc;
